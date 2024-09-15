@@ -1,0 +1,10 @@
+^C:\USERS\DANIE\ONEDRIVE\DOCUMENTS\GITHUB\1ST_LAB\BUILD\CMAKEFILES\459131C2275F84B5765A73973AA90DCF\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/danie/OneDrive/Documents/GitHub/1st_lab -BC:/Users/danie/OneDrive/Documents/GitHub/1st_lab/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/danie/OneDrive/Documents/GitHub/1st_lab/build/example.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
