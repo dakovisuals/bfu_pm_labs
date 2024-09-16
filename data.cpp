@@ -27,14 +27,14 @@ int main()
 	std::cout << "Short" << std::endl;
 	short v {1};
 	std::cout << "Size of short: " << sizeof(short) << std::endl;
-	std::cout << "Min/Max values: " << std::numeric_limits<short>::max() << " / " << std::numeric_limits<short>::max() << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<short>::min() << " / " << std::numeric_limits<short>::max() << std::endl;
 	std::cout << "Example: " << v << std::endl;
 	std::cout << "--------------------" << std::endl;
 
 	std::cout << "Long long" << std::endl;
 	long long n {8};
 	std::cout << "Size of long long : " << sizeof(long long) << std::endl;
-	std::cout << "Min/Max values: " << std::numeric_limits<long long>::max() << " / " << std::numeric_limits<long long>::max() << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<long long>::min() << " / " << std::numeric_limits<long long>::max() << std::endl;
 	std::cout << "Example: " << n << std::endl;
 	std::cout << "--------------------" << std::endl;
 
