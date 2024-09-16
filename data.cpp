@@ -18,10 +18,10 @@ int main()
 	std::cout << "--------------------" << std::endl;
 
 	std::cout << "Unsigned int" << std::endl;
-	unsigned int {100};
+	unsigned int w {100};
 	std::cout << "Size of unsigned int: " << sizeof(unsigned int) << std::endl;
 	std::cout << "Min/Max values: " << std::numeric_limits<unsigned int>::min() << " / " << std::numeric_limits<unsigned int>::max() << std::endl;
-	std::cout << "Example: " << c << std::endl;
+	std::cout << "Example: " << w << std::endl;
 	std::cout << "--------------------" << std::endl;
 
 	std::cout << "Short" << std::endl;
