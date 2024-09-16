@@ -13,14 +13,35 @@ int main()
 	int b {17};
 	int c {a + b};
 	std::cout << "Size of int: " << sizeof(int) << std::endl;
-	std::cout << "Min/Max values: " << std::numeric_limits<int>::min() << " / " << std::numeric_limits<float>::max() << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<int>::min() << " / " << std::numeric_limits<int>::max() << std::endl;
 	std::cout << "Example a + b / 1 + 17: " << c << std::endl;
 	std::cout << "--------------------" << std::endl;
 
-	std::cout << "Character" << std::endl;
+	std::cout << "Unsigned int" << std::endl;
+	unsigned int {100};
+	std::cout << "Size of unsigned int: " << sizeof(unsigned int) << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<unsigned int>::min() << " / " << std::numeric_limits<unsigned int>::max() << std::endl;
+	std::cout << "Example: " << c << std::endl;
+	std::cout << "--------------------" << std::endl;
+
+	std::cout << "Short" << std::endl;
+	short v {1};
+	std::cout << "Size of short: " << sizeof(short) << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<short>::max() << " / " << std::numeric_limits<short>::max() << std::endl;
+	std::cout << "Example: " << v << std::endl;
+	std::cout << "--------------------" << std::endl;
+
+	std::cout << "Long long" << std::endl;
+	long long n {8};
+	std::cout << "Size of long long : " << sizeof(long long) << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<long long>::max() << " / " << std::numeric_limits<long long>::max() << std::endl;
+	std::cout << "Example: " << n << std::endl;
+	std::cout << "--------------------" << std::endl;
+
+	std::cout << "Char" << std::endl;
 	char grade = 'AAA';
 	std::cout << "Size of chr: " << sizeof(char) << std::endl;
-	std::cout << "Min/Max values: " << std::numeric_limits<char>::min() << " / " << std::numeric_limits<float>::max() << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<char>::min() << " / " << std::numeric_limits<char>::max() << std::endl;
 	std::cout << "Example: " << grade << std::endl;
 	std::cout << "--------------------" << std::endl;
 
@@ -39,6 +60,13 @@ int main()
 	std::cout << "Size of float: " << sizeof(float) << std::endl;
 	std::cout << "Min/Max values: " << std::numeric_limits<float>::min() << " / " << std::numeric_limits<float>::max() << std::endl;
 	std::cout << "Example f + g / 0.01 + 0.02: " << h << std::endl;
+	std::cout << "--------------------" << std::endl;
+
+	std::cout << "Double" << std::endl;
+	double m {0.00009};
+	std::cout << "Size of double: " << sizeof(double) << std::endl;
+	std::cout << "Min/Max values: " << std::numeric_limits<double>::min() << " / " << std::numeric_limits<double>::max() << std::endl;
+	std::cout << "Example: " << m << std::endl;
 
 	return 0;
 }
