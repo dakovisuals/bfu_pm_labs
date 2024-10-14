@@ -18,7 +18,7 @@ int main()
             {
                 int local = mas[i];
                 mas[i] = mas[j];
-                mas[j] = mas[i];
+                mas[j] = local;
             }
   
 
