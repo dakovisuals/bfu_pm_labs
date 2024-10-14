@@ -63,15 +63,11 @@ int main()
     std::cout << "Input X value (-1 or 1) : " << std::endl;
     std::cin >> X;
     
-    if((X != 1) && (X != -1))
-        std::cout << "Error: X must be 1 or -1";
-
-    else if(X==1)
+    if(X==1)
         std::cout << "Positive number";
     
     else
         std::cout << "Negative number";
-
 
     return 0;
 }
