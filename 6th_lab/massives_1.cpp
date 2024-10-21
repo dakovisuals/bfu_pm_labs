@@ -23,7 +23,10 @@ int main()
   
 
     for(int i=0;i<n;i++)
-        std::cout << mas[i];
+        if (i == n-1)
+            std::cout << mas[i] << ".";
+        else
+            std::cout << mas[i] << ", ";
 
     return 0;
 }
