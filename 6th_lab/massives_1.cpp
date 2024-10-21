@@ -2,7 +2,7 @@
 
 int main()
 {
-    const int N_Max = 10;
+    const int N_Max = 10000;
     int mas[N_Max];
 
     int n;
