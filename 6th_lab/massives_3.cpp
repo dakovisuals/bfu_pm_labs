@@ -15,12 +15,11 @@ int main()
         for(int j=0;j<m;j++)
             std::cin >> matrix[i][j];
             
-    int sm;
     int mx = 0;
     int stroke = 0;
     for(int i=0;i<n;i++)
     {
-        sm = 0;
+        int sm = 0;
 
         for(int j=0;j<m;j++)
             sm += matrix[i][j];
