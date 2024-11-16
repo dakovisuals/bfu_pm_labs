@@ -1,4 +1,5 @@
 #include <iostream>
+
 int SumOfDigits(int x)
 {   
     int sm = 0;
@@ -13,13 +14,17 @@ int SumOfDigits(int x)
 
 bool Palindrome(int x)
 {   
+    int true_x = x;
     int mirrored_x = 0;
+    if(x < 11)
+        return 0;
     while(x>0)
-    {
-        mirrored_x = mirrored_x*10 + x%10;
+    {   
+        mirrored_x = ((mirrored_x*10) + x%10);
         x /= 10;
     }  
-    return x == mirrored_x;
+
+    return true_x == mirrored_x;
 }
 
 int main()
@@ -29,21 +34,21 @@ int main()
     int n;
     std::cin >> n;
 
+    //In
     for(int i=0;i<n;i++)
         std::cin >> mas[i];
 
 
-    // Deleting
+    //Deleting
     int j = 0;
     for(int i=0;i<n;i++)
     {
         if(SumOfDigits(mas[i]) == 10)
-        continue;
+            continue;
         mas[j] = mas[i];
         j++;
     }
     n = j;
-
 
 
     //Duplicating
@@ -51,15 +56,17 @@ int main()
     {
 	    if(Palindrome(mas[i]))
 	    {
-		    for(int j=n;j>i;j--)
-		    {
-			    mas[j] = mas[j-1];
-		    }
+        n++;
+		    for(int j=n-1;j>i;j--)
+                {
+                    mas[j+1] = mas[j];
+			        mas[j] = mas[j-1];                    
+                }
 	    i++;
-	    n++;
 	    }
     }
 
+    //Out
     for(int i=0;i<n;i++)
         std::cout << mas[i] << std::endl;
     return 0;
