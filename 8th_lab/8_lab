@@ -1,0 +1,30 @@
+#include <iostream>
+#include <fstream>
+#include <func.hpp>
+#include <string>
+
+int main()
+{   
+    const int N_Max = 2000;
+    int mas[N_Max];
+    
+    std::ifstream in("text.txt");
+    if(!in.is_open())
+    {
+        std::cout << "//file error" << std::endl;
+        return -1;
+    }
+
+    while(!in.eof())
+    {
+        std::string s;
+        in >> s;
+        std::cout << s;
+    }
+
+
+    
+
+
+    return 0;
+}
