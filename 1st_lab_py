@@ -1,0 +1,36 @@
+def f(a, b, c):
+
+  # mx value
+  if a >= b:
+      if a >= c:
+          mx = a
+      else:
+          mx = c
+  else:
+      if b >= c:
+          mx = b
+      else:
+          mx = c
+
+  # mn value
+  if a <= b:
+      if a <= c:
+          mn = a
+      else:
+          mn = c
+  else:
+      if b <= c:
+          mn = b
+      else:
+          mn = c
+
+  return mn, mx
+
+# ex.
+x = 10
+y = 5
+z = 15
+
+mn, mx = f(x, y, z)
+print(f"min value: {mn}")
+print(f"max value: {mx}")
