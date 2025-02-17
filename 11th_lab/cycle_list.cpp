@@ -1,5 +1,5 @@
 #include <iostream>
-#include <func.hpp>
+#include <func01.hpp>
 
 int main()
 {
@@ -7,28 +7,33 @@ int main()
     sent->next = sent;
     sent->prev = sent;
     
+    
+    //input
     std::cout << "Enter a quantatiy of numbers:" << std::endl;
     int n;
     std::cin >> n;
     std::cout << "Enter " << n << " numbers: " << std::endl;
-    for(int i=0;i<n;i++) 
-    {
+    for(int i=0;i<n;i++) {
         int a;
         std::cin >> a;
         AddBack(sent, a);
     }
 
-    /*if(mt::TwoEqualNums(sent, n))
-        mt::Sort(sent);
+    //code
+    if(mt::TwoEqualDatas(sent, n))
+        mt::SortByLastDigit(sent, n);
     else {
         mt::DeleteThree(sent);
         mt::DuplicateSeven(sent);
-    }*/
+    }
 
-    mt::Sort(sent, n);
+    //output
     mt::Print(sent);
-    mt::Clear(sent);
 
+    //delete data from heap
+    mt::Clear(sent);
     delete sent;
+
+
     return 0;
 }
