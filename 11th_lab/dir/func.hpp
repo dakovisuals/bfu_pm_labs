@@ -21,7 +21,5 @@ namespace mt
     
     bool TwoEqualDatas(Node* sent, int n);
 
-    void SortByLastDigit(Node* sent, int n);
-    //void Sort();
-    
+    void SortByLastDigit(Node* sent, int n);    
 }
