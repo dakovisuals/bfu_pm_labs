@@ -1,5 +1,5 @@
 #include <iostream>
-#include <func.hpp>
+#include <func01.hpp>
 
 namespace mt
 {
@@ -87,42 +87,39 @@ namespace mt
 
     bool TwoEqualDatas(Node* sent, int n) 
     {
-        bool flag = false;
-        Node* p = sent->next;
-
+        Node* p = sent->next; 
         for(int i=0;i<n-1;i++) {
+            
             Node* q = p->next;
-
+    
             for(int j=i+1;j<n;j++) {
-                if(q->data == p->data) {
-                    flag = true;
+                if(q->data == p->data) { 
+                    return true;
                     break;
-                }
+                } 
                 q = q->next;
-
-            p = p->next;
             }
-        }       
-        return flag;
+            p = p->next;
+        }
+        return false;
     }
 
-    void Sort(Node* sent, int n) 
+    void SortByLastDigit(Node* sent, int n) 
     {
-        Node* p = sent->next;
-
+        Node* p = sent->next; 
         for(int i=0;i<n-1;i++) {
-            Node* q = p->next;
 
+            Node* q = p->next;
+    
             for(int j=i+1;j<n;j++) {
-                if(q->data < p->data) {
+                if((q->data)%10 > (p->data)%10) { 
                     int tmp = p->data;
                     p->data = q->data;
                     q->data = tmp;
                 }
                 q = q->next;
-
-            p = p->next;
             }
-        }       
+            p = p->next;
+        }
     }
 }
