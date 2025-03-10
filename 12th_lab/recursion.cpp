@@ -1,8 +1,6 @@
 #include <iostream>
 #include <fstream>
 const int N_Max = 5;
-using ull = unsigned long long;
-
 
 //1.
 int f(int x)
@@ -14,10 +12,10 @@ int f(int x)
     else 
     {
         int next = f(x/10);
-        int digit = x%10;
+        int current = x%10;
     
-        if(digit > next)
-            return digit;
+        if(current > next)
+            return current;
         else
             return next;
     }
@@ -25,49 +23,50 @@ int f(int x)
 
 
 //2.
-void swap(int numbers[N_Max], ull a, ull b)
+void swap(int numbers[N_Max], int a, int b)
 {
-    ull tmp = numbers[a];
+    int tmp = numbers[a];
     numbers[a] = numbers[b];
     numbers[b] = tmp;
 }
 
 
-void qsort(int numbers[], ull start, ull end)
+void qsort(int numbers[], int start, int end)
 {
-    // начальный индекс должен быть меньше конечного индекса для массива из 2 и более элементов
-    if (start >= end)
+    if (start == end)
         return;
-    // проверяем все элементы относительно элемента с индексом start
-    ull current = start;
-    for (ull i=start+1; i <= end; i++)
-    {
-        // если i-ый элемент меньше начального
+    
+
+    int pivot = start;
+    for(int i=start+1; i <= end; i++)
         if (numbers[i] < numbers[start]) 
-            swap(numbers, current=current+1, i); // меняем его с левым
-    }
+        {   
+            pivot++;
+            swap(numbers, pivot, i);
+        }
 
-    swap(numbers, start, current); // Меняем выбранный (start) и последний обмененный элементы
+    swap(numbers, start, pivot); 
 
-    if (current > start) 
-        qsort(numbers, start, current-1); // Сортируем элементы слева
 
-    if (end > current+1) 
-        qsort(numbers, current+1, end); // Сортируем элементы справа
+    // [start ... pivot-1] pivot [pivot+1 ... end]
+    if(start < pivot) 
+        qsort(numbers, start, pivot-1);
+
+    if(pivot < end) 
+        qsort(numbers, pivot+1, end); 
 }
 
 
 //3.
-void Search(int i, int j, int step, int n, int m, char field[100][100], 
-    int table[100][100]) 
-    {
+void Search(int i, int j, int step, int n, int m, char field[100][100], int table[100][100]) 
+{
     if(step >= table[i][j])
-    return;
+        return;
 
     table[i][j] = step;
 
     if(field[i][j] == 'E')
-    return;
+        return;
     
     //diagonal directions
     if(i + 1 < n && j + 1 < n && field[i+1][j+1] != '#')
@@ -88,7 +87,7 @@ void Search(int i, int j, int step, int n, int m, char field[100][100],
     Search(i,j+1,step+1,n,m,field,table);
     if(j - 1 >= 0 && field[i][j - 1] != '#')
     Search(i,j-1,step+1,n,m,field,table);
-    }
+}
 
 
 int main()
@@ -101,15 +100,18 @@ int main()
     std::cout << "Max digit is: " << f(N) << std::endl;
 
 
+
     //2.
     int numbers[N_Max];
     for(int i=0; i<N_Max; i++)
         std::cin >> numbers[i];
     
+    //quick sort
     qsort(numbers, 0, N_Max-1);
 
     for(int i=0; i<N_Max; i++)
         std::cout << numbers[i] << " ";
+
 
 
     //3.
@@ -142,7 +144,5 @@ int main()
         for(int j=0;j<m;j++)
             std::cout << field[i][j] << ' ';
         std::cout << std::endl;
-    }
-    
     return 0;
 }
