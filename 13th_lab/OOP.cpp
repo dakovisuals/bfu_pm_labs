@@ -34,11 +34,13 @@ class object {
         bool setup()
         {
             if(m_side_a <= 0 || m_side_b <= 0 || m_angle <= 0 || m_angle >= 180) {
-                std::cout << "Error: Parallelogram can't be defined" << std::endl;
+                std::cerr << "Error: Parallelogram can't be defined" << std::endl;
                 return 0;
             }
-            else 
+            else {
+                std::cerr << "Object: Parallelogram" << std::endl;
                 return 1;
+            }
         }
 
         int calc_perimeter() {
