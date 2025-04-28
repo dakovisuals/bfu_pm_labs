@@ -9,12 +9,11 @@ class BigInt {
         char m_digits[N_Max];
         unsigned short m_size;
 
-
     public:
+
         BigInt() = default;
         //ctor
         BigInt(const std::string& digits) {
-            std::cout << "/ctor" << std::endl;
 
             unsigned long long len = digits.length();
             m_size = len;
@@ -35,13 +34,14 @@ class BigInt {
         }
         */
         
-        //dtor
+        /*dtor
         ~BigInt() {
             std::cout << "/dtor" << std::endl;
         }
+        */
 
         //operators
-        BigInt& operator+=(const BigInt& other) { 
+        BigInt& operator+=(const BigInt& other) {
             for(int i=0; i<m_size; i++) {
                 m_digits[i] += other.m_digits[i];
                 if(m_digits[i] > 9) {
@@ -53,18 +53,45 @@ class BigInt {
                         m_size++;
                 }
             }
-            return *this; // this - указатель на сам класс *this - x
+            return *this;
         }
 
-        BigInt operator+(const BigInt& other) {
+        BigInt operator+(BigInt& other) {
             BigInt result(*this);
-            result += other; // return value optimization
-            return result;
+
+            if(other.m_size >= m_size)
+            {
+                other += result;
+                return other;
+            }
+
+            else {
+                result += other;
+                return result;
+            }
         }
 
 
 
+        bool operator<(const BigInt& other) {
+            if(m_size < other.m_size)
+                return true;
+            else if(m_size > other.m_size)
+                return false;
+            else {
+                for(int i=m_size-1; i>=0; i--) {
+                    if(m_digits[i] < other.m_digits[i])
+                        return true;
+                    else if(m_digits[i] > other.m_digits[i])
+                        return false;
+                }
+                return false;
+            }
+        }
 
+        bool operator>=(const BigInt& other) {
+            return !(*this < other);
+        }
 
         BigInt& operator*=(const BigInt& other) {
             BigInt result = *this * other;
@@ -99,7 +126,7 @@ std::istream& operator>>(std::istream& in, BigInt& other) {
 //ostream
 std::ostream& operator<<(std::ostream& out, const BigInt& other) {
     for(int i=0; i<other.m_size; i++) {
-        out << static_cast<unsigned short>(other.m_digits[other.m_size - i - 1]);
+        out << static_cast<short>(other.m_digits[other.m_size - i - 1]);
     }
     return out;
 }
@@ -111,19 +138,16 @@ int main()
     BigInt X("30");
     BigInt Y("150");
 
-    X += "10";
-    std::cout << "X+=10: " << X << std::endl;
+    //X += BigInt("10");
+    //std::cout << "X += 10: " << X << std::endl;
 
 
-    BigInt Z = X + Y;
+    BigInt Z;
+    Z = X+Y;
     std::cout << "Z: " << Z << std::endl;
 
-    /*    X++;
-    std::cout << "X++: " << X << std::endl;
-
     if (X < Y)
-		std::cout << "X < Y" << std::endl;*/
-
+		std::cout << "X < Y" << std::endl;
 
     return 0;
 }
