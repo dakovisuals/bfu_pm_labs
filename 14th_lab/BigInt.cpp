@@ -69,16 +69,16 @@ std::ostream& operator<<(std::ostream& out, const BigInt& other) {
 
 int main()
 {   
-    BigInt X('30');
-    BigInt Y('150');
+    BigInt X("30");
+    BigInt Y("150");
     BigInt Z = X + Y;
-    std::cout << 'Z: ' << Z << std::endl;
+    std::cout << "Z: " << Z << std::endl;
 
-    std::cout << 'X: ' << X << std::endl;
-    X += '10';
-    std::cout << 'X+=10: ' << X << std::endl;
+    std::cout << "X: " << X << std::endl;
+    X += "10";
+    std::cout << "X+=10: " << X << std::endl;
     X++;
-    std::cout << 'X++: ' << X << std::endl;
+    std::cout << "X++: " << X << std::endl;
 
     if (X < Y)
 		std::cout << "X < Y" << std::endl;
