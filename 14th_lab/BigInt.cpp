@@ -3,23 +3,22 @@
 const int N_Max = 1000;
 
 class BigInt {
-
     // fields
     private:
         char m_digits[N_Max];
         unsigned short m_size;
 
     public:
-
         BigInt() = default;
+
         //ctor
         BigInt(const std::string& digits) {
 
             unsigned long long len = digits.length();
             m_size = len;
 
-            for(int i=0; i<len; i++)
-                m_digits[i] = digits[len-i-1] - 48; // в реверсивном порядке
+            for(int i=0; i<len; i++) // в реверсивном порядке
+                m_digits[i] = digits[len-i-1] - '0'; 
 
             for(int i=len; i<N_Max; i++)
                 m_digits[i] = 0;
@@ -27,48 +26,29 @@ class BigInt {
             
         }
 
-        /* copy ctor
-        BigInt(const BigInt& other) {
-            std::cout << "/copy_ctor" << std::endl;
-            std::copy(other.m_digits, other.m_digits+m_size, m_digits);
-        }
-        */
-        
-        /*dtor
-        ~BigInt() {
-            std::cout << "/dtor" << std::endl;
-        }
-        */
-
         //operators
         BigInt& operator+=(const BigInt& other) {
-            for(int i=0; i<m_size; i++) {
+            unsigned short new_size = std::max(m_size, other.m_size);
+            for(int i=0; i<new_size; i++) {
                 m_digits[i] += other.m_digits[i];
                 if(m_digits[i] > 9) {
                     m_digits[i] -= 10;
                     m_digits[i+1]++;
 
                     // на всякий случай проверка размера
-                    if(i+1 == m_size)
-                        m_size++;
+                    if(i+1 == new_size) {
+                        new_size++;
+                    }
                 }
             }
+            m_size = new_size;
             return *this;
         }
 
         BigInt operator+(BigInt& other) {
             BigInt result(*this);
-
-            if(other.m_size >= m_size)
-            {
-                other += result;
-                return other;
-            }
-
-            else {
-                result += other;
-                return result;
-            }
+            result += other;
+            return result;
         }
 
 
@@ -93,21 +73,18 @@ class BigInt {
             return !(*this < other);
         }
 
-        BigInt& operator*=(const BigInt& other) {
-            BigInt result = *this * other;
-            *this = result;
-            return result;
-        }
-
         BigInt& operator*(const BigInt& other) {
             BigInt result("0");
             for(BigInt i("0"); i<other; i+=BigInt("1"))
-            result += *this;
+                result += *this;
 
             return result;
         }
 
-
+        BigInt& operator*=(const BigInt& other) {
+            *this = *this * other;
+            return *this;
+        }
     
     //функция ostream имеет доступ к приватным полям
     friend std::ostream& operator<<(std::ostream& out, const BigInt& other);
@@ -136,14 +113,14 @@ int main()
 {   
     BigInt None;
     BigInt X("30");
-    BigInt Y("150");
+    BigInt Y("4");
 
     //X += BigInt("10");
     //std::cout << "X += 10: " << X << std::endl;
 
 
     BigInt Z;
-    Z = X+Y;
+    Z = X + Y;
     std::cout << "Z: " << Z << std::endl;
 
     if (X < Y)
