@@ -85,7 +85,30 @@ class BigInt {
 					
 					if(m_size==1 && m_digits[0]==0){
 						m_sign=true; // ноль считается положительным
-						this->m_sign = other.m_sign; // знак берется большего 
+						this->m_sign = this->m_sign; // знак берется большего 
+					} 
+				}
+				else {
+					BigInt tmp = (*this);
+					*this = other;
+
+					for(int i=0;i<m_size;i++){
+						if(m_digits[i] < tmp.m_digits[i]){
+								m_digits[i+1] -= 1;
+								m_digits[i] = m_digits[i] + 10 - tmp.m_digits[i];
+							} 
+
+						else 
+							m_digits[i] -= tmp.m_digits[i];
+						}
+
+					// Удаляем ведущие нули
+					while(m_size>1 && m_digits[m_size-1]==0)
+						m_size--;
+					
+					if(m_size==1 && m_digits[0]==0){
+						m_sign=true; // ноль считается положительным
+						this->m_sign = this->m_sign; // знак берется большего 
 					} 
 				}
 			}
@@ -94,7 +117,7 @@ class BigInt {
 
 		// Вычитание с учетом знаков
 		BigInt& operator-=(const BigInt& other) {
-			BigInt tmp = (other);
+			BigInt tmp = other;
 			tmp.m_sign = !other.m_sign;
 			*this += tmp;
 
@@ -173,15 +196,20 @@ std::istream& operator>>(std::istream& in, BigInt& num) {
 
 int main()
 {   
-    BigInt a("2001");
+    BigInt a("20");
     BigInt b("-11");
     
-	/*BigInt c = a+b;
-	std::cout <<"a+b = " << c  << std::endl;*/
-
-	//BigInt d("10");
 	a += b;
-	std::cout <<"a+=b = " << a  << std::endl;
+	std::cout <<"a+=b = " << a << std::endl;
+
+	a -= b;
+	std::cout <<"a-=b = " << a << std::endl;
+
+	BigInt c = a - b;
+	std::cout <<"a-b = " << c << std::endl;
+
+	BigInt d = a+b;
+	std::cout <<"a+b = " << d << std::endl;
 
 	if(a<b)
 		std::cout<<"a < b"<<std::endl;
