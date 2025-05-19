@@ -1,169 +1,195 @@
 #include <math.h>
 #include <iostream>
-#include <string>
+
 
 const int N_Max = 1000;
 
 class BigInt {
-    // fields
-private:
+	private:
+		char m_digits[N_Max]; // цифры в обратном порядке
+		unsigned short m_size; // количество цифр
+		bool m_sign; // true - положительное, false - отрицательное
 
-public:
-    char m_digits[N_Max];
-    unsigned short m_size;
-    bool m_is_negative; 
+	public:
+		BigInt() : m_sign(true), m_size(0) {
+			for (int i = 0; i < N_Max; i++) {
+				m_digits[i] = 0;
+			}
+		}
 
-    BigInt() = default;
-    // ctor
-    BigInt(const std::string& digits) {
-        unsigned long long len = digits.length();
-        m_size = len;
-        
-        if(m_digits[0] == '-') {
-            m_is_negative = 1;
+		// ctor
+		BigInt(const std::string& digits) {
 
-            for(int i = 0; i < m_size; i++) // в реверсивном порядке
-                m_digits[i] = digits[m_size-i-1] - '0';
+			// Обработка знака
+			size_t start_idx = 0;
+			if (!digits.empty() && digits[0] == '-') {
+				m_sign = false;
+				start_idx = 1;
+			} 
+			else 
+				m_sign = true;
 
-            for (int i = m_size; i < N_Max; i++)
-                m_digits[i] = 0;
-        }
+			size_t len = digits.length() - start_idx;
+			m_size = len;
 
-        else {
-            m_is_negative = 0;
+			for(int i = 0; i < len; i++) {
+				m_digits[i] = digits[len - i - 1 + start_idx] - '0'; // в реверсивном порядке
+			}
 
-            for(int i = 0; i < m_size; i++) // в реверсивном порядке
-                m_digits[i] = digits[m_size-i-1] - '0';
+			for(int i = len; i < N_Max; i++) {
+				m_digits[i] = 0;
+			}
+		}
 
-            for(int i = m_size; i < N_Max; i++)
-                m_digits[i] = 0;
-        }
-    }
+		bool abs_less(const BigInt& other) const {
+			if (m_size != other.m_size)
+				return m_size < other.m_size;
+			for (int i = m_size - 1; i >= 0; i--) {
+				if (m_digits[i] != other.m_digits[i])
+					return m_digits[i] < other.m_digits[i];
+			}
+			return false; 
+		}
 
-    // operators
-    
-    bool operator<(const BigInt& other) {
-        if (m_is_negative && !other.m_is_negative)
-            return true;
-    }
-        /*
-        else if (!m_is_negative && other.m_is_negative)
-            return false;
+		// Операция сложения с учетом знаков
+		BigInt& operator+=(const BigInt& other) {
+			if (m_sign == other.m_sign) {
+				// одинаковый знак: складываем абсолютные значения
+				unsigned short new_size = std::max(m_size, other.m_size);
+				int carry = 0;
+				for (int i=0; i<new_size || carry; i++) {
+					int sum = m_digits[i] + other.m_digits[i] + carry;
+					m_digits[i] = sum % 10;
+					carry = sum /10;
+					if (i >= m_size) m_size++;
+				}
+				m_sign = this->m_sign; // знак остается прежним
+			} 
+			
+			else {
+				// разные знаки: вычитаем больший из меньшего по абсолюту
+				if (abs_less(other)) {
+				
+				}
 
-        if(m_is_negative==1 && other.m_is_negative==1) {
-            std::cout << "check";
-            if (m_size > other.m_size)
-                return true;
-            else if (m_size < other.m_size)
-                return false;
+				for(int i=0;i<m_size;i++){
+					if(m_digits[i] < other.m_digits[i]){
+							m_digits[i+1] -= 1;
+							m_digits[i] = m_digits[i] + 10 - other.m_digits[i];
+						} 
 
-            else {
-                for(int i=m_size-1; i>0; i--) {
-                    if(m_digits[i] < other.m_digits[i])
-                    return false;
+					else 
+						m_digits[i] -= other.m_digits[i];
+					}
 
-                    else if(m_digits[i] > other.m_digits[i])
-                        return true;
-
-                }
-                return true;
-            }
-        }
-
-        else if(m_is_negative==0 && other.m_is_negative==0) {
-            if(m_size < other.m_size)
-                return true;
-            else if(m_size > other.m_size)
-                return false;
-
-            else {
-                for(int i=m_size-1; i>=0; i--) {
-                    if(m_digits[i] < other.m_digits[i])
-                        return true;
-                    else if(m_digits[i] > other.m_digits[i])
-                        return false;
-                }
-                return false;
-            }
-        }
-    }
-
-    bool operator>=(const BigInt& other) const {
-        return !(*this < other);
-    }
-    
-   
-    BigInt& operator+=(const BigInt& other) {
-        unsigned short new_size = std::max(m_size, other.m_size);
-        if(!m_is_negative && !other.m_is_negative) {
-            for(int i=0; i<new_size; i++) {
-                m_digits[i] += other.m_digits[i];
-                if(m_digits[i] > 9) {
-                    m_digits[i] -= 10;
-                    m_digits[i+1]++;
-
-                    // на всякий случай проверка размера
-                    if(i+1 == new_size) {
-                        new_size++;
-                    }
-                }
-            }
-        }  
-        else {
-
-        }
-        m_size = new_size;
-        return *this;
-    }
+				// Удаляем ведущие нули
+				while(m_size>1 && m_digits[m_size-1]==0)
+					m_size--;
+				
+				if(m_size==1 && m_digits[0]==0){
+					m_sign=true; // ноль считается положительным
+					this->m_sign = other.m_sign; // знак берется большего 
+				} 
 
 
-    BigInt operator+(const BigInt& other) const {
-        BigInt result(*this);
-        result += other;
-        return result;
-    }
+			return *this;
+		}
 
+		// Вычитание с учетом знаков
+		BigInt& operator-=(const BigInt& other) {
+			BigInt tmp = (other);
+			tmp.m_sign = !other.m_sign;
+			*this += tmp;
 
+			return *this;
+		}
 
+		// Операторы + и -
+		BigInt operator+(const BigInt& other) const {
+			BigInt result(*this);
+			result += other;
+			return result;
+		}
 
-    friend std::ostream& operator<<(std::ostream& out, const BigInt& other);
+		BigInt operator-(const BigInt& other) const {
+			BigInt result(*this);
+			result -= other;
+			return result;
+		}
 
+		bool operator<(const BigInt& other) const {
+			if (m_sign != other.m_sign)
+				return !m_sign;
+
+			if (m_sign) { 
+				// оба положительные: сравниваем абсолютные значения
+				if (m_size != other.m_size)
+					return m_size < other.m_size;
+
+				for(int i=m_size-1;i>=0;i--) {
+					if(m_digits[i]<other.m_digits[i])
+						return true;
+					else if(m_digits[i]>other.m_digits[i])
+						return false;
+				}
+				return false; 
+			} 
+			
+			else { 
+				// оба отрицательные: сравниваем абсолютные значения, но логика обратная
+				if (m_size != other.m_size)
+					return m_size > other.m_size;
+
+				for(int i=m_size-1;i>=0;i--) {
+					if(m_digits[i]<other.m_digits[i])
+						return false; 
+					else if(m_digits[i]>other.m_digits[i])
+						return true; 
+				}
+				return false; 
+			}
+		}
+
+		bool operator>=(const BigInt& other) const {
+			return !(*this<other);
+		}
+
+		friend std::ostream& operator<<(std::ostream& out, const BigInt& num);
 };
 
-//istream
-std::istream& operator>>(std::istream& in, BigInt& other) {
+// оператор вывода с учетом знака
+std::ostream& operator<<(std::ostream& out, const BigInt& num) {
+    if (!num.m_sign && !(num.m_size==1 && num.m_digits[0]==0))
+        out << '-';
+    for(int i=num.m_size-1;i>=0;i--) {
+        out << static_cast<short>(num.m_digits[i]);
+    }
+    return out;
+}
+
+std::istream& operator>>(std::istream& in, BigInt& num) {
     std::string s;
     in >> s;
-    other = BigInt(s);
+    num=BigInt(s);
     return in;
 }
 
-//ostream
-std::ostream& operator<<(std::ostream& out, const BigInt& other) {
-    if (other.m_is_negative)
-        out << '-';
+int main()
+{   
+    BigInt a("70");
+    BigInt b("-120");
+    
+	/*BigInt c = a+b;
+	std::cout <<"a+b = " << c  << std::endl;*/
 
-    for (int i = 0; i < other.m_size; i++) {
-        out << static_cast<short>(other.m_digits[other.m_size - i - 1]);
-    }
+	//BigInt d("10");
+	a += b;
+	std::cout <<"a+=b = " << a  << std::endl;
 
-return out;
-*/
-}
-
-int main() {   
-    BigInt X("-1");
-    BigInt Y("2");
-
-    //BigInt Z = X + Y;
-
-    //std::cout << "Z: " << Z << std::endl;
-
-    if (X >= Y)
-		std::cout << "X >= Y" << std::endl;
-    else if (X < Y)
-        std::cout << "X < Y" << std::endl;
-
+	if(a<b)
+		std::cout<<"a < b"<<std::endl;
+	else
+		std::cout<<"a >= b"<<std::endl;
 
 	return 0;
 }
