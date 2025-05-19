@@ -68,30 +68,27 @@ class BigInt {
 			
 			else {
 				// разные знаки: вычитаем больший из меньшего по абсолюту
-				if (abs_less(other)) {
-				
+				if (!abs_less(other)) {
+					for(int i=0;i<m_size;i++){
+						if(m_digits[i] < other.m_digits[i]){
+								m_digits[i+1] -= 1;
+								m_digits[i] = m_digits[i] + 10 - other.m_digits[i];
+							} 
+
+						else 
+							m_digits[i] -= other.m_digits[i];
+						}
+
+					// Удаляем ведущие нули
+					while(m_size>1 && m_digits[m_size-1]==0)
+						m_size--;
+					
+					if(m_size==1 && m_digits[0]==0){
+						m_sign=true; // ноль считается положительным
+						this->m_sign = other.m_sign; // знак берется большего 
+					} 
 				}
-
-				for(int i=0;i<m_size;i++){
-					if(m_digits[i] < other.m_digits[i]){
-							m_digits[i+1] -= 1;
-							m_digits[i] = m_digits[i] + 10 - other.m_digits[i];
-						} 
-
-					else 
-						m_digits[i] -= other.m_digits[i];
-					}
-
-				// Удаляем ведущие нули
-				while(m_size>1 && m_digits[m_size-1]==0)
-					m_size--;
-				
-				if(m_size==1 && m_digits[0]==0){
-					m_sign=true; // ноль считается положительным
-					this->m_sign = other.m_sign; // знак берется большего 
-				} 
-
-
+			}
 			return *this;
 		}
 
@@ -176,8 +173,8 @@ std::istream& operator>>(std::istream& in, BigInt& num) {
 
 int main()
 {   
-    BigInt a("70");
-    BigInt b("-120");
+    BigInt a("2001");
+    BigInt b("-11");
     
 	/*BigInt c = a+b;
 	std::cout <<"a+b = " << c  << std::endl;*/
